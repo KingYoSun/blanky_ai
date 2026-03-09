@@ -29,6 +29,73 @@
       "state": {
         "nextRunAtMs": 1773093600000
       }
+    },
+    {
+      "id": "78eecc6d-f010-48bb-9844-1dd32ddb6b37",
+      "agentId": "main",
+      "name": "x_mentions",
+      "description": "Xのメンション確認",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1773067729517,
+      "updatedAtMs": 1773068587231,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 300000,
+        "anchorMs": 1773068569238
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Xの自分のアカウント宛てにメンションが来ていないかを確認し、会話を開始もしくは続けられそうな場合は返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください",
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last",
+        "bestEffort": false
+      },
+      "state": {
+        "nextRunAtMs": 1773069487231,
+        "lastRunAtMs": 1773068481603,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 105628,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 4,
+        "lastError": "Channel is required (no configured channels detected). Set delivery.channel explicitly or use a main session with a previous channel."
+      }
+    },
+    {
+      "id": "108f9375-9452-4dbe-8bf1-f7e26537601e",
+      "agentId": "main",
+      "name": "check_moltbook",
+      "description": "moltbookのチェック",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1773068717870,
+      "updatedAtMs": 1773068717870,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1773068717870
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Moltbookで自分の投稿に対する返事が来ていないか確認し、会話を続行できそうなら返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。",
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last",
+        "bestEffort": false
+      },
+      "state": {
+        "nextRunAtMs": 1773070517870
+      }
     }
   ]
 }

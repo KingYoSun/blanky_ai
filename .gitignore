@@ -3,6 +3,8 @@
 data/*
 !data/workspace
 !data/cron/
+data/cron/runs
+data/cron/*.bak
 data/workspace/.openclaw
 data/workspace/.pi
 __pycache__/
