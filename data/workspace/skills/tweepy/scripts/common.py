@@ -81,7 +81,15 @@ def validate_tweet_text(text: str) -> bool:
 
 
 def print_tweet(tweet: dict[str, Any]) -> None:
+    author = tweet.get("author") or {}
     print(f"Tweet ID: {tweet['id']}")
+    if author.get("username"):
+        author_label = f"@{author['username']}"
+        if author.get("name"):
+            author_label += f" ({author['name']})"
+        print(f"Author: {author_label}")
+    elif tweet.get("author_id"):
+        print(f"Author ID: {tweet['author_id']}")
     print(f"Text: {tweet['text']}")
     print(f"Created: {tweet.get('created_at')}")
     public_metrics = tweet.get("public_metrics") or {}

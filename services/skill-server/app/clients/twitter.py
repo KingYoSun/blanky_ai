@@ -16,26 +16,34 @@ from app.domain.credentials import XTokenState, XTokenStore, utcnow
 logger = logging.getLogger(__name__)
 
 
-def _tweet_to_dict(tweet: tweepy.Tweet) -> dict[str, Any]:
-    return {
+def _tweet_to_dict(
+    tweet: tweepy.Tweet,
+    author_map: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    author_id = str(tweet.author_id) if getattr(tweet, "author_id", None) else None
+    payload = {
         "id": str(tweet.id),
         "text": tweet.text,
-        "created_at": tweet.created_at.isoformat() if tweet.created_at else None,
-        "author_id": str(tweet.author_id) if getattr(tweet, "author_id", None) else None,
-        "public_metrics": tweet.public_metrics,
+        "created_at": tweet.created_at.isoformat() if getattr(tweet, "created_at", None) else None,
+        "author_id": author_id,
+        "public_metrics": getattr(tweet, "public_metrics", None),
     }
+    if author_id and author_map and author_id in author_map:
+        payload["author"] = author_map[author_id]
+    return payload
 
 
 def _user_to_dict(user: tweepy.User) -> dict[str, Any]:
+    user_id = getattr(user, "id", None)
     return {
-        "id": str(user.id),
-        "username": user.username,
-        "name": user.name,
-        "description": user.description,
-        "location": user.location,
-        "verified": user.verified,
-        "created_at": user.created_at.isoformat() if user.created_at else None,
-        "public_metrics": user.public_metrics,
+        "id": str(user_id) if user_id is not None else None,
+        "username": getattr(user, "username", None),
+        "name": getattr(user, "name", None),
+        "description": getattr(user, "description", None),
+        "location": getattr(user, "location", None),
+        "verified": getattr(user, "verified", None),
+        "created_at": user.created_at.isoformat() if getattr(user, "created_at", None) else None,
+        "public_metrics": getattr(user, "public_metrics", None),
     }
 
 
@@ -333,6 +341,67 @@ class TwitterService:
             "next_token": response.meta.get("next_token") if response.meta else None,
         }
 
+    def get_mentions(
+        self,
+        limit: int = 20,
+        since_id: str | None = None,
+        until_id: str | None = None,
+        pagination_token: str | None = None,
+    ) -> dict[str, Any]:
+        authenticated_user = self._get_authenticated_user()
+        requested_limit = limit
+        fetch_limit = max(5, min(limit, 100))
+        tweet_fields = ["created_at", "public_metrics", "author_id"]
+        user_fields = [
+            "created_at",
+            "public_metrics",
+            "description",
+            "verified",
+            "location",
+        ]
+
+        params: dict[str, Any] = {
+            "max_results": fetch_limit,
+            "expansions": ["author_id"],
+            "tweet_fields": tweet_fields,
+            "user_fields": user_fields,
+            "user_auth": False,
+        }
+        if since_id:
+            params["since_id"] = since_id
+        if until_id:
+            params["until_id"] = until_id
+        if pagination_token:
+            params["pagination_token"] = pagination_token
+
+        response = self._execute_user_call(
+            lambda client: client.get_users_mentions(str(authenticated_user.id), **params)
+        )
+
+        includes = getattr(response, "includes", None) or {}
+        author_map: dict[str, dict[str, Any]] = {}
+        if isinstance(includes, dict):
+            for user in includes.get("users", []):
+                user_payload = _user_to_dict(user)
+                user_id = user_payload.get("id")
+                if user_id:
+                    author_map[user_id] = user_payload
+
+        mentions = [
+            _tweet_to_dict(tweet, author_map=author_map) for tweet in (response.data or [])
+        ][:requested_limit]
+
+        return {
+            "user": _user_to_dict(authenticated_user),
+            "count": len(mentions),
+            "requested_limit": requested_limit,
+            "mentions": mentions,
+            "next_token": response.meta.get("next_token") if response.meta else None,
+            "previous_token": response.meta.get("previous_token") if response.meta else None,
+            "since_id": since_id,
+            "until_id": until_id,
+        }
+
     def get_user(self, username: str | None = None, user_id: str | None = None) -> dict[str, Any]:
         if not username and not user_id:
             raise RuntimeError("Either username or user_id is required.")
@@ -363,6 +432,24 @@ class TwitterService:
             )
 
         return {"user": _user_to_dict(result.data)}
+
+    def _get_authenticated_user(self) -> tweepy.User:
+        user_fields = [
+            "created_at",
+            "public_metrics",
+            "description",
+            "verified",
+            "location",
+        ]
+        result = self._execute_user_call(
+            lambda client: client.get_me(
+                user_fields=user_fields,
+                user_auth=False,
+            )
+        )
+        if result.data is None:
+            raise RuntimeError("Failed to resolve the authenticated X user.")
+        return result.data
 
     def _needs_refresh(self, state: XTokenState) -> bool:
         if not state.access_token:

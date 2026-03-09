@@ -168,6 +168,25 @@ def get_timeline(
     return result
 
 
+@router.get("/mentions")
+def get_mentions(
+    request: Request,
+    limit: int = Query(default=20, ge=1, le=100),
+    since_id: str | None = Query(default=None),
+    until_id: str | None = Query(default=None),
+    pagination_token: str | None = Query(default=None),
+) -> dict[str, object]:
+    service = request.app.state.twitter_service
+    result = service.get_mentions(
+        limit=limit,
+        since_id=since_id,
+        until_id=until_id,
+        pagination_token=pagination_token,
+    )
+    result["request_id"] = request.state.request_id
+    return result
+
+
 @router.get("/users/by-username/{username}")
 def get_user_by_username(request: Request, username: str) -> dict[str, object]:
     service = request.app.state.twitter_service
