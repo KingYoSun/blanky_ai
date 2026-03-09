@@ -1,0 +1,7 @@
+.env
+.local/
+data/*
+!data/workspace
+data/workspace/.openclaw
+data/workspace/.pi
+__pycache__/

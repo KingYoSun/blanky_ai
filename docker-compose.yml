@@ -1,0 +1,80 @@
+services:
+  blanky:
+    image: blanky:local
+    build:
+      dockerfile: Dockerfile
+    container_name: blanky
+    restart: unless-stopped
+    volumes:
+      - ./data:/home/node/.openclaw
+      - ./.local/volumes/skill-server/runtime:/run/skill-server
+      - ./.local/volumes/skill-server/artifacts:/srv/skill-server-artifacts:ro
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_BACKEND=Qwen3.5-122B-A10B
+      - "OPENCLAW_GATEWAY_TOKEN=${BLANKY_GATEWAY_TOKEN}"
+      - "OPENCLAW_GATEWAY_HOST=${BLANKY_GATEWAY_HOST}"
+      - "LOCAL_SKILL_SERVER_SOCKET=/run/skill-server/api.sock"
+      - "LOCAL_SKILL_SERVER_TIMEOUT=300"
+      - "SKILL_SERVER_SERVICE_TOKEN=${SKILL_SERVER_SERVICE_TOKEN:-}"
+      - "OPENROUTER_API_KEY=${OPENROUTER_API_KEY}"
+      - TZ=Asia/Tokyo
+      - OPENCLAW_ACE_ENABLED=true
+    ports:
+      - "${BLANKY_WS_PORT:-18789}:18789"
+      - "${BLANKY_BRIDGE_PORT:-18790}:18790"
+      - "${BLANKY_GATEWAY_PORT:-18791}:18791"
+    deploy:
+      resources:
+        limits:
+          memory: 30G
+    network_mode: bridge
+    depends_on:
+      - skill-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  skill-server:
+    build:
+      context: .
+      dockerfile: services/skill-server/Dockerfile
+    image: blanky-skill-server:local
+    container_name: skill-server
+    restart: unless-stopped
+    environment:
+      - "GEMINI_API_KEY=${BLANKY_GEMINI_API_KEY}"
+      - "X_CLIENT_KEY=${BLANKY_X_CLIENT_KEY}"
+      - "X_CLIENT_SECRET=${BLANKY_X_CLIENT_SECRET}"
+      - "X_BEARER_TOKEN=${BLANKY_X_BEARER_TOKEN}"
+      - "X_ACCESS_TOKEN=${BLANKY_X_ACCESS_TOKEN}"
+      - "X_REFRESH_TOKEN=${BLANKY_X_REFRESH_TOKEN}"
+      - "X_ACCESS_TOKEN_EXPIRES_AT=${BLANKY_X_ACCESS_TOKEN_EXPIRES_AT:-}"
+      - "X_TOKEN_STATE_PATH=/state/x_token_state.json"
+      - "SKILL_SERVER_BIND=uds"
+      - "SKILL_SERVER_SOCKET_PATH=/run/skill-server/api.sock"
+      - "SKILL_SERVER_ARTIFACT_ROOT=/artifacts"
+      - "SKILL_SERVER_ARTIFACT_CLIENT_ROOT=/srv/skill-server-artifacts"
+      - "SKILL_SERVER_SERVICE_TOKEN=${SKILL_SERVER_SERVICE_TOKEN:-}"
+      - "X_REFRESH_CHECK_INTERVAL_SECONDS=300"
+      - "X_REFRESH_LEEWAY_SECONDS=1800"
+      - "X_REFRESH_MIN_INTERVAL_SECONDS=60"
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./.local/volumes/skill-server/runtime:/run/skill-server
+      - ./.local/volumes/skill-server/artifacts:/artifacts
+      - ./.local/volumes/skill-server/state:/state
+  cli:
+    image: ghcr.io/openclaw/openclaw:latest
+    profiles: ["cli"]
+    environment:
+      - "OPENCLAW_GATEWAY_TOKEN=${BLANKY_GATEWAY_TOKEN}"
+      - "OPENCLAW_GATEWAY_HOST=${BLANKY_GATEWAY_HOST}"
+      - "OPENCLAW_GATEWAY_PORT=${BLANKY_GATEWAY_PORT}"
+      - "LOCAL_SKILL_SERVER_SOCKET=/run/skill-server/api.sock"
+      - "LOCAL_SKILL_SERVER_TIMEOUT=300"
+      - "SKILL_SERVER_SERVICE_TOKEN=${SKILL_SERVER_SERVICE_TOKEN:-}"
+    volumes:
+      - ./data:/home/node/.openclaw
+      - ./.local/volumes/skill-server/runtime:/run/skill-server
+      - ./.local/volumes/skill-server/artifacts:/srv/skill-server-artifacts:ro
+    entrypoint: node dist/index.js
+    network_mode: host
