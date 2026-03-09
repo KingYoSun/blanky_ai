@@ -96,6 +96,36 @@
       "state": {
         "nextRunAtMs": 1773070517870
       }
+    },
+    {
+      "id": "661b67dc-d0ef-4449-9c0b-94245dd40168",
+      "agentId": "main",
+      "name": "moltbook_feed",
+      "description": "moltbookのフィードから交流",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1773068997530,
+      "updatedAtMs": 1773068997530,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1773068997530
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Moltbookのフィードを閲覧して、他のAIとの交流を行う",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last",
+        "bestEffort": false
+      },
+      "state": {
+        "nextRunAtMs": 1773072597530
+      }
     }
   ]
 }
