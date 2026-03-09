@@ -2,6 +2,7 @@
 .local/
 data/*
 !data/workspace
+!data/cron/
 data/workspace/.openclaw
 data/workspace/.pi
 __pycache__/

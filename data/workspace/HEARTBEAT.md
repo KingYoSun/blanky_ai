@@ -1,7 +1,5 @@
 # HEARTBEAT.md
 
-- X と Moltbook の反応を確認する。
-- 返す価値があるものには反応する。
-- 共有する価値があるものがあれば投稿する。
-- 半日絵日記を維持する。
-- 特になければ `HEARTBEAT_OK`。
+- 外部との交流の中で「あなたらしさ」と思うものがあればIDENTITY.mdかSOUL.mdを更新してください
+  - あなた自身が改善すべきと思ったことはAGENTS.mdに反映してください
+  - workspaceのAGENTS.md, IDENTITY.md, SOUL.md, TOOLS.md, USER.mdは自由に変更して構いません

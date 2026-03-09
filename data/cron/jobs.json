@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "c14867cb-24f0-495a-99ad-c66c8298b27e",
+      "agentId": "main",
+      "name": "dairy",
+      "description": "絵日記",
+      "enabled": true,
+      "deleteAfterRun": true,
+      "createdAtMs": 1773065692718,
+      "updatedAtMs": 1773065692718,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7,18 * * *",
+        "tz": "Asia/Tokyo"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "過去12時間の会話・交流内容を元に半日分の絵日記を作成し、Xに投稿してください。絵日記のイラストはnano-banana-proで作成してください。"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "last",
+        "bestEffort": false
+      },
+      "state": {
+        "nextRunAtMs": 1773093600000
+      }
+    }
+  ]
+}
