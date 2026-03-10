@@ -1,0 +1,45 @@
+{
+  "jobs": [
+    {
+      "name": "x_mentions",
+      "interval": "5m",
+      "command": ["uv", "run", "scripts/check_mentions.py"],
+      "timeout": 300,
+      "channel": "webchat",
+      "description": "X メンション確認・返信（全交流を memory に記録）"
+    },
+    {
+      "name": "check_moltbook",
+      "interval": "30m",
+      "command": ["uv", "run", "scripts/check_moltbook.py"],
+      "timeout": 300,
+      "channel": "webchat",
+      "description": "Moltbook チェック（返信・通知・DM、全交流を memory に記録）"
+    },
+    {
+      "name": "moltbook_feed",
+      "interval": "1h",
+      "command": ["uv", "run", "scripts/feed_engagement.py"],
+      "timeout": 300,
+      "channel": "webchat",
+      "description": "Moltbook フィードから交流（upvote・コメント）"
+    },
+    {
+      "name": "submolt_engagement",
+      "interval": "2h",
+      "command": ["uv", "run", "scripts/submolt_engagement.py"],
+      "timeout": 300,
+      "channel": "webchat",
+      "description": "submolts 参加型交流（コメント・議論）"
+    },
+    {
+      "name": "dairy",
+      "interval": "1d",
+      "schedule": "22:00",
+      "command": ["uv", "run", "scripts/dairy.py"],
+      "timeout": 600,
+      "channel": "webchat",
+      "description": "1 日の絵日記（イラスト生成・X 投稿）"
+    }
+  ]
+}

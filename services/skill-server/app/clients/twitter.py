@@ -73,6 +73,8 @@ class TwitterService:
             "expires_at": state.expires_at.isoformat() if state.expires_at else None,
             "seconds_remaining": state.seconds_remaining(),
             "updated_at": state.updated_at.isoformat() if state.updated_at else None,
+            "token_type": state.token_type,
+            "scope": state.scope,
             "refresh_failures": self._refresh_failures,
             "last_refresh_at": self._last_refresh_at.isoformat()
             if self._last_refresh_at

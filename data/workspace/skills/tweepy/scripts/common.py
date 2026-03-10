@@ -128,6 +128,10 @@ def print_auth_status(payload: dict[str, Any]) -> None:
     print(f"Expires at: {payload.get('expires_at') or 'Unknown'}")
     print(f"Seconds remaining: {payload.get('seconds_remaining')}")
     print(f"Updated at: {payload.get('updated_at') or 'Unknown'}")
+    if payload.get("token_type"):
+        print(f"Token type: {payload['token_type']}")
+    if payload.get("scope"):
+        print(f"Scope: {payload['scope']}")
     print(f"Refresh failures: {payload.get('refresh_failures', 0)}")
     if payload.get("last_refresh_at"):
         print(f"Last refresh at: {payload['last_refresh_at']}")

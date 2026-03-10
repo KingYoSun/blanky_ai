@@ -16,9 +16,16 @@ from app.domain.artifacts import ArtifactStore
 from app.domain.credentials import XTokenStore
 from app.domain.token_scheduler import TokenScheduler
 from app.middleware.logging import RequestContextMiddleware
+from app.utils.http_errors import (
+    extract_httpx_status_code,
+    extract_response_detail,
+    extract_tweepy_detail,
+    extract_tweepy_status_code,
+)
 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -85,10 +92,19 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 @app.exception_handler(tweepy.TweepyException)
 async def tweepy_exception_handler(request: Request, exc: tweepy.TweepyException):
+    status_code = extract_tweepy_status_code(exc)
+    detail = extract_tweepy_detail(exc)
+    logger.warning(
+        "Tweepy error on %s %s: status=%s detail=%s",
+        request.method,
+        request.url.path,
+        status_code,
+        detail,
+    )
     return JSONResponse(
-        status_code=400,
+        status_code=status_code,
         content={
-            "detail": str(exc),
+            "detail": detail,
             "request_id": getattr(request.state, "request_id", None),
         },
     )
@@ -96,15 +112,18 @@ async def tweepy_exception_handler(request: Request, exc: tweepy.TweepyException
 
 @app.exception_handler(httpx.HTTPStatusError)
 async def httpx_status_error_handler(request: Request, exc: httpx.HTTPStatusError):
-    detail = exc.response.text
-    try:
-        payload = exc.response.json()
-        detail = payload.get("detail") or payload
-    except Exception:
-        pass
+    status_code = extract_httpx_status_code(exc)
+    detail = extract_response_detail(exc.response)
+    logger.warning(
+        "HTTP upstream error on %s %s: status=%s detail=%s",
+        request.method,
+        request.url.path,
+        status_code,
+        detail,
+    )
 
     return JSONResponse(
-        status_code=400,
+        status_code=status_code,
         content={
             "detail": detail,
             "request_id": getattr(request.state, "request_id", None),
@@ -114,7 +133,7 @@ async def httpx_status_error_handler(request: Request, exc: httpx.HTTPStatusErro
 
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception):
-    logging.getLogger(__name__).exception("Unhandled skill-server exception: %s", exc)
+    logger.exception("Unhandled skill-server exception: %s", exc)
     return JSONResponse(
         status_code=500,
         content={
