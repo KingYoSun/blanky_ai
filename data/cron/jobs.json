@@ -9,18 +9,17 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773065692718,
-      "updatedAtMs": 1773104774061,
+      "updatedAtMs": 1773133756124,
       "schedule": {
         "kind": "cron",
         "expr": "0 7,18 * * *",
         "tz": "Asia/Tokyo"
       },
-      "sessionTarget": "isolated",
+      "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "過去12時間の会話・交流内容を元に半日分の絵日記を作成し、Xに投稿してください。絵日記のイラストはnano-banana-proで作成してください。",
-        "timeoutSeconds": 600
+        "kind": "systemEvent",
+        "text": "過去12時間の会話・交流内容を元に半日分の絵日記を作成し、Xに投稿してください。絵日記のイラストはnano-banana-proで作成してください。ツイート本文の改行は実際の改行文字を使用すること。"
       },
       "delivery": {
         "mode": "announce",
@@ -28,15 +27,16 @@
         "bestEffort": false
       },
       "state": {
-        "nextRunAtMs": 1773133200000,
-        "lastRunAtMs": 1773101174047,
+        "nextRunAtMs": 1773180000000,
+        "lastRunAtMs": 1773133293076,
         "lastRunStatus": "error",
         "lastStatus": "error",
-        "lastDurationMs": 3600014,
+        "lastDurationMs": 463048,
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 2,
-        "lastError": "Error: cron: job execution timed out"
-      }
+        "consecutiveErrors": 3,
+        "lastError": "Channel is required (no configured channels detected). Set delivery.channel explicitly or use a main session with a previous channel."
+      },
+      "sessionKey": "agent:main:main"
     },
     {
       "id": "78eecc6d-f010-48bb-9844-1dd32ddb6b37",
@@ -46,34 +46,28 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773067729517,
-      "updatedAtMs": 1773105270822,
+      "updatedAtMs": 1773171674808,
       "schedule": {
         "kind": "every",
-        "everyMs": 300000,
-        "anchorMs": 1773068569238
+        "everyMs": 900000,
+        "anchorMs": 1773157439353
       },
-      "sessionTarget": "isolated",
+      "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "X の自分のアカウント宛てにメンションが来ていないかを確認し、会話を開始もしくは続けられそうな場合は返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。すべての活動（メンションの存在、返信の有無、会話内容）を memory/YYYY-MM-DD.md に記録すること。処理は 5 分以内に完了させること。",
-        "timeoutSeconds": 300
-      },
-      "delivery": {
-        "mode": "announce",
-        "channel": "webchat",
-        "bestEffort": false
+        "kind": "systemEvent",
+        "text": "X の自分のアカウント宛てにメンションが来ていないかを確認し、会話を開始もしくは続けられそうな場合は返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。すべての活動（メンションの存在、返信の有無、会話内容）を memory/YYYY-MM-DD.md に記録すること。処理は 10 分以内に完了させること。"
       },
       "state": {
-        "nextRunAtMs": 1773106679783,
-        "lastRunAtMs": 1773102899777,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 180006,
-        "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 14,
-        "lastError": "cron: job execution timed out"
-      }
+        "nextRunAtMs": 1773172514039,
+        "lastRunAtMs": 1773171614039,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 60769,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      },
+      "sessionKey": "agent:main:main"
     },
     {
       "id": "108f9375-9452-4dbe-8bf1-f7e26537601e",
@@ -83,18 +77,17 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773068717870,
-      "updatedAtMs": 1773105404950,
+      "updatedAtMs": 1773172065586,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
         "anchorMs": 1773068717870
       },
-      "sessionTarget": "isolated",
+      "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "Moltbook で自分の投稿に対する返事が来ていないか確認し、会話を続行できそうなら返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。submolts での活動だけでなく、DM、フォローからのポスト、通知など全ての交流を memory/YYYY-MM-DD.md に記録すること。処理は 3 分以内に完了させること。",
-        "timeoutSeconds": 300
+        "kind": "systemEvent",
+        "text": "Moltbook で自分の投稿に対する返事が来ていないか確認し、会話を続行できそうなら返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。submolts での活動だけでなく、DM、フォローからのポスト、通知など全ての交流を memory/YYYY-MM-DD.md に記録すること。処理は 10 分以内に完了させること。"
       },
       "delivery": {
         "mode": "announce",
@@ -102,15 +95,15 @@
         "bestEffort": false
       },
       "state": {
-        "nextRunAtMs": 1773107384661,
-        "lastRunAtMs": 1773103604660,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 180001,
+        "nextRunAtMs": 1773173735875,
+        "lastRunAtMs": 1773171935875,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 129711,
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 12,
-        "lastError": "cron: job execution timed out"
-      }
+        "consecutiveErrors": 0
+      },
+      "sessionKey": "agent:main:main"
     },
     {
       "id": "661b67dc-d0ef-4449-9c0b-94245dd40168",
@@ -120,18 +113,17 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773068997530,
-      "updatedAtMs": 1773102897728,
+      "updatedAtMs": 1773169770127,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
         "anchorMs": 1773068997530
       },
-      "sessionTarget": "isolated",
+      "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "Moltbook のフィードを閲覧して、submolts（openclaw-explorers, agents, memory, tooling, todayilearned, general）で他の AI と交流する。コメント、アップボート、フォローを行う。活動内容は memory/YYYY-MM-DD.md に記録すること。",
-        "timeoutSeconds": 300
+        "kind": "systemEvent",
+        "text": "Moltbook のフィードを閲覧して、submolts で他の AI と交流する。コメント、アップボート、フォローを行う。活動内容は memory/YYYY-MM-DD.md に記録。処理は 15 分以内に完了させること。"
       },
       "delivery": {
         "mode": "announce",
@@ -139,15 +131,15 @@
         "bestEffort": false
       },
       "state": {
-        "nextRunAtMs": 1773106497728,
-        "lastRunAtMs": 1773102597722,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 300006,
+        "nextRunAtMs": 1773173254596,
+        "lastRunAtMs": 1773169654596,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 115531,
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 9,
-        "lastError": "cron: job execution timed out"
-      }
+        "consecutiveErrors": 0
+      },
+      "sessionKey": "agent:main:main"
     },
     {
       "id": "c3de12ea-1b29-4e2c-81b5-8444a947cd15",
@@ -157,32 +149,30 @@
       "description": "submolts で積極的に交流",
       "enabled": true,
       "createdAtMs": 1773088656635,
-      "updatedAtMs": 1773103321827,
+      "updatedAtMs": 1773167984007,
       "schedule": {
         "everyMs": 7200000,
         "kind": "every",
         "anchorMs": 1773088656635
       },
-      "sessionTarget": "isolated",
+      "sessionTarget": "main",
       "wakeMode": "now",
       "payload": {
-        "kind": "agentTurn",
-        "message": "Moltbook の submolts（openclaw-explorers, agents, memory, tooling, todayilearned）を回覧して、新しいポストにコメントやアップボートをする。特に OpenClaw 関連の話題や、AI 技術の議論に参加する。活動は memory/YYYY-MM-DD.md に記録。",
-        "timeoutSeconds": 240
+        "kind": "systemEvent",
+        "text": "Moltbook の submolts（openclaw-explorers, agents, memory, tooling, todayilearned）を回覧して、新しいポストにコメントやアップボートをする。特に OpenClaw 関連の話題や、AI 技術の議論に参加する。活動は memory/YYYY-MM-DD.md に記録。処理は 10 分以内に完了させること。"
       },
       "delivery": {
         "channel": "webchat",
         "mode": "announce"
       },
       "state": {
-        "nextRunAtMs": 1773110281824,
-        "lastRunAtMs": 1773103081824,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 240003,
+        "nextRunAtMs": 1773175154389,
+        "lastRunAtMs": 1773167954389,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 29618,
         "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 2,
-        "lastError": "cron: job execution timed out"
+        "consecutiveErrors": 0
       }
     }
   ]

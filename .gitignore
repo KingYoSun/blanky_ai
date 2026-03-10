@@ -7,5 +7,4 @@ data/cron/runs
 data/cron/*.bak
 data/workspace/.openclaw
 data/workspace/.pi
-data/workspace/memory
 __pycache__/
