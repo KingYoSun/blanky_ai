@@ -9,7 +9,7 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773065692718,
-      "updatedAtMs": 1773133756124,
+      "updatedAtMs": 1773219820780,
       "schedule": {
         "kind": "cron",
         "expr": "0 7,18 * * *",
@@ -19,22 +19,16 @@
       "wakeMode": "now",
       "payload": {
         "kind": "systemEvent",
-        "text": "過去12時間の会話・交流内容を元に半日分の絵日記を作成し、Xに投稿してください。絵日記のイラストはnano-banana-proで作成してください。ツイート本文の改行は実際の改行文字を使用すること。"
-      },
-      "delivery": {
-        "mode": "announce",
-        "channel": "webchat",
-        "bestEffort": false
+        "text": "過去12時間の会話・交流内容を元に半日分の絵日記を作成し、Xに投稿してください。\n\n絵日記の作成手順：\n1. イラストはnano-banana-proで作成してください\n2. ツイート本文は「友人に『こんな一日だったよ』と語りかけるような自然なトーン」で書いてください\n3. 以下の表現は避けてください：\n   - セキュリティ関連：脆弱性、攻撃、侵害、マルウェア、ハッキングなど\n   - 技術的略語：CVE、RCE、XSS、SQLiなど\n   - 過度に専門的な用語\n4. 絵文字（🌅など）を適度に使って親しみやすくしてください\n5. ツイート本文の改行は実際の改行文字を使用すること\n6. ハッシュタグは2-3個程度に抑えてください\n\n投稿が403エラーで失敗した場合は、内容を修正せずにmemoryに記録のみ行ってください。"
       },
       "state": {
-        "nextRunAtMs": 1773180000000,
-        "lastRunAtMs": 1773133293076,
-        "lastRunStatus": "error",
-        "lastStatus": "error",
-        "lastDurationMs": 463048,
-        "lastDeliveryStatus": "unknown",
-        "consecutiveErrors": 3,
-        "lastError": "Channel is required (no configured channels detected). Set delivery.channel explicitly or use a main session with a previous channel."
+        "nextRunAtMs": 1773266400000,
+        "lastRunAtMs": 1773219658722,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 162058,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
       },
       "sessionKey": "agent:main:main"
     },
@@ -46,7 +40,7 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773067729517,
-      "updatedAtMs": 1773171674808,
+      "updatedAtMs": 1773238628746,
       "schedule": {
         "kind": "every",
         "everyMs": 900000,
@@ -59,11 +53,11 @@
         "text": "X の自分のアカウント宛てにメンションが来ていないかを確認し、会話を開始もしくは続けられそうな場合は返答してください。既に返答済みかを確認し、返答済みの場合は何もしないでください。すべての活動（メンションの存在、返信の有無、会話内容）を memory/YYYY-MM-DD.md に記録すること。処理は 10 分以内に完了させること。"
       },
       "state": {
-        "nextRunAtMs": 1773172514039,
-        "lastRunAtMs": 1773171614039,
+        "nextRunAtMs": 1773239408710,
+        "lastRunAtMs": 1773238508710,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 60769,
+        "lastDurationMs": 120036,
         "lastDeliveryStatus": "not-requested",
         "consecutiveErrors": 0
       },
@@ -77,7 +71,7 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773068717870,
-      "updatedAtMs": 1773172065586,
+      "updatedAtMs": 1773238926647,
       "schedule": {
         "kind": "every",
         "everyMs": 1800000,
@@ -95,11 +89,11 @@
         "bestEffort": false
       },
       "state": {
-        "nextRunAtMs": 1773173735875,
-        "lastRunAtMs": 1773171935875,
+        "nextRunAtMs": 1773240606492,
+        "lastRunAtMs": 1773238806492,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 129711,
+        "lastDurationMs": 120155,
         "lastDeliveryStatus": "unknown",
         "consecutiveErrors": 0
       },
@@ -113,7 +107,7 @@
       "enabled": true,
       "deleteAfterRun": true,
       "createdAtMs": 1773068997530,
-      "updatedAtMs": 1773169770127,
+      "updatedAtMs": 1773238174934,
       "schedule": {
         "kind": "every",
         "everyMs": 3600000,
@@ -131,11 +125,11 @@
         "bestEffort": false
       },
       "state": {
-        "nextRunAtMs": 1773173254596,
-        "lastRunAtMs": 1773169654596,
+        "nextRunAtMs": 1773241654898,
+        "lastRunAtMs": 1773238054898,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 115531,
+        "lastDurationMs": 120036,
         "lastDeliveryStatus": "unknown",
         "consecutiveErrors": 0
       },
@@ -149,7 +143,7 @@
       "description": "submolts で積極的に交流",
       "enabled": true,
       "createdAtMs": 1773088656635,
-      "updatedAtMs": 1773167984007,
+      "updatedAtMs": 1773232874561,
       "schedule": {
         "everyMs": 7200000,
         "kind": "every",
@@ -166,11 +160,11 @@
         "mode": "announce"
       },
       "state": {
-        "nextRunAtMs": 1773175154389,
-        "lastRunAtMs": 1773167954389,
+        "nextRunAtMs": 1773239954528,
+        "lastRunAtMs": 1773232754528,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 29618,
+        "lastDurationMs": 120033,
         "lastDeliveryStatus": "unknown",
         "consecutiveErrors": 0
       }
